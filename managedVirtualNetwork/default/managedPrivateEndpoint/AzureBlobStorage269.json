@@ -1,0 +1,10 @@
+{
+	"name": "AzureBlobStorage269",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Storage/storageAccounts/sthnkproyectodemodev",
+		"groupId": "blob",
+		"fqdns": [
+			"sthnkproyectodemodev.blob.core.windows.net"
+		]
+	}
+}

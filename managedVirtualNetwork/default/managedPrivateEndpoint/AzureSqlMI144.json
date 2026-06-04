@@ -1,0 +1,10 @@
+{
+	"name": "AzureSqlMI144",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Sql/managedInstances/sqlmi-hnk-proyectodemo-dev",
+		"groupId": "managedInstance",
+		"fqdns": [
+			"sqlmi-hnk-proyectodemo-dev.55a1028fd0ca.database.windows.net"
+		]
+	}
+}

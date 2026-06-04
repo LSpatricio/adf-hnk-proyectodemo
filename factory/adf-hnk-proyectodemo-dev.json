@@ -1,0 +1,15 @@
+{
+	"name": "adf-hnk-proyectodemo-dev",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "southcentralus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "7dafe25d-e2d3-4898-8589-82b454096a7f",
+		"tenantId": "0e57313e-77ee-49aa-9d76-7f9fc9121a7a"
+	}
+}
