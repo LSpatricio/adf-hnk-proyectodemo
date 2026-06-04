@@ -1,0 +1,35 @@
+{
+	"name": "DS_SFTP_XCARET",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SFTP_XCARET",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"directory": {
+				"type": "string"
+			},
+			"fileName": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "SFTP"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "SftpLocation",
+				"fileName": {
+					"value": "@dataset().fileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@if(equals(dataset().directory,'Entrada'),'Data','Publication')",
+					"type": "Expression"
+				}
+			}
+		}
+	}
+}
