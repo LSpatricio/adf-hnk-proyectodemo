@@ -1,6 +1,12 @@
 {
 	"name": "adf-hnk-proyectodemo-dev",
 	"properties": {
+		"globalParameters": {
+			"encryptedFilesContainer": {
+				"type": "string",
+				"value": "encrypted-files"
+			}
+		},
 		"trustModeClaimForMi": {
 			"value": "Disabled",
 			"editable": true
