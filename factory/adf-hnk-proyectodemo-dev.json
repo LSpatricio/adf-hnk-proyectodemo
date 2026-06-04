@@ -5,6 +5,10 @@
 			"encryptedFilesContainer": {
 				"type": "string",
 				"value": "encrypted-files"
+			},
+			"decryptedFilesContainer": {
+				"type": "string",
+				"value": "decrypted-files"
 			}
 		},
 		"trustModeClaimForMi": {
