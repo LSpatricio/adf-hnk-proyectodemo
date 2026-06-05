@@ -253,10 +253,7 @@
 			}
 		],
 		"parameters": {
-			"schema": {
-				"type": "string"
-			},
-			"tableName": {
+			"fileName": {
 				"type": "string"
 			}
 		},
