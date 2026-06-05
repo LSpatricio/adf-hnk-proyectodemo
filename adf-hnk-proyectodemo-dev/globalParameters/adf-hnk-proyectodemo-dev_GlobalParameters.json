@@ -1,0 +1,14 @@
+{
+	"encryptedFilesContainer": {
+		"type": "string",
+		"value": "encrypted-files"
+	},
+	"decryptedFilesContainer": {
+		"type": "string",
+		"value": "decrypted-files"
+	},
+	"filesToSQLContainer": {
+		"type": "string",
+		"value": "direct-files"
+	}
+}

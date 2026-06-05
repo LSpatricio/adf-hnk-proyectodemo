@@ -1,0 +1,144 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-hnk-proyectodemo-dev"
+		},
+		"LS_Blob_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://sthnkproyectodemodev.blob.core.windows.net/"
+		},
+		"LS_KV_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://kv-hnk-proyectodemo-dev.vault.azure.net/"
+		},
+		"LS_SFTP_XCARET_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "ftp.cloud.varicent.com"
+		},
+		"LS_SFTP_XCARET_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "xcaretdemodev"
+		},
+		"LS_SQLMI_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "sqlmi-connectionstring-vnet"
+		},
+		"TRG_ST_ENCRYPTED_properties_PL_ST_COPY_SFTP_ENCRYP_parameters_fileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"TRG_ST_ENCRYPTED_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Storage/storageAccounts/sthnkproyectodemodev"
+		},
+		"TRG_ST_FILES_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Storage/storageAccounts/sthnkproyectodemodev"
+		},
+		"AzureBlobStorage269_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Storage/storageAccounts/sthnkproyectodemodev"
+		},
+		"AzureBlobStorage269_properties_groupId": {
+			"type": "string",
+			"defaultValue": "blob"
+		},
+		"AzureBlobStorage269_properties_fqdns": {
+			"type": "array",
+			"defaultValue": [
+				"sthnkproyectodemodev.blob.core.windows.net"
+			]
+		},
+		"AzureSqlMI144_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Sql/managedInstances/sqlmi-hnk-proyectodemo-dev"
+		},
+		"AzureSqlMI144_properties_groupId": {
+			"type": "string",
+			"defaultValue": "managedInstance"
+		},
+		"AzureSqlMI144_properties_fqdns": {
+			"type": "array",
+			"defaultValue": [
+				"sqlmi-hnk-proyectodemo-dev.55a1028fd0ca.database.windows.net"
+			]
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adf-hnk-proyectodemo-dev_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"LS_KV_properties_typeProperties_baseUrl": {
+						"value": "[parameters('LS_KV_properties_typeProperties_baseUrl')]"
+					},
+					"TRG_ST_FILES_properties_typeProperties_scope": {
+						"value": "[parameters('TRG_ST_FILES_properties_typeProperties_scope')]"
+					},
+					"LS_SFTP_XCARET_properties_typeProperties_host": {
+						"value": "[parameters('LS_SFTP_XCARET_properties_typeProperties_host')]"
+					},
+					"LS_SFTP_XCARET_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SFTP_XCARET_properties_typeProperties_userName')]"
+					},
+					"AzureBlobStorage269_properties_privateLinkResourceId": {
+						"value": "[parameters('AzureBlobStorage269_properties_privateLinkResourceId')]"
+					},
+					"AzureBlobStorage269_properties_groupId": {
+						"value": "[parameters('AzureBlobStorage269_properties_groupId')]"
+					},
+					"AzureBlobStorage269_properties_fqdns": {
+						"value": "[parameters('AzureBlobStorage269_properties_fqdns')]"
+					},
+					"AzureSqlMI144_properties_privateLinkResourceId": {
+						"value": "[parameters('AzureSqlMI144_properties_privateLinkResourceId')]"
+					},
+					"AzureSqlMI144_properties_groupId": {
+						"value": "[parameters('AzureSqlMI144_properties_groupId')]"
+					},
+					"AzureSqlMI144_properties_fqdns": {
+						"value": "[parameters('AzureSqlMI144_properties_fqdns')]"
+					},
+					"LS_Blob_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('LS_Blob_properties_typeProperties_serviceEndpoint')]"
+					},
+					"LS_SQLMI_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('LS_SQLMI_properties_typeProperties_connectionString_secretName')]"
+					},
+					"TRG_ST_ENCRYPTED_properties_PL_ST_COPY_SFTP_ENCRYP_parameters_fileName": {
+						"value": "[parameters('TRG_ST_ENCRYPTED_properties_PL_ST_COPY_SFTP_ENCRYP_parameters_fileName')]"
+					},
+					"TRG_ST_ENCRYPTED_properties_typeProperties_scope": {
+						"value": "[parameters('TRG_ST_ENCRYPTED_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

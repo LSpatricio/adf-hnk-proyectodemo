@@ -1,0 +1,55 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-hnk-proyectodemo-dev"
+		},
+		"LS_Blob_properties_typeProperties_serviceEndpoint": {
+			"value": "https://sthnkproyectodemodev.blob.core.windows.net/"
+		},
+		"LS_KV_properties_typeProperties_baseUrl": {
+			"value": "https://kv-hnk-proyectodemo-dev.vault.azure.net/"
+		},
+		"LS_SFTP_XCARET_properties_typeProperties_host": {
+			"value": "ftp.cloud.varicent.com"
+		},
+		"LS_SFTP_XCARET_properties_typeProperties_userName": {
+			"value": "xcaretdemodev"
+		},
+		"LS_SQLMI_properties_typeProperties_connectionString_secretName": {
+			"value": "sqlmi-connectionstring-vnet"
+		},
+		"TRG_ST_ENCRYPTED_properties_PL_ST_COPY_SFTP_ENCRYP_parameters_fileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"TRG_ST_ENCRYPTED_properties_typeProperties_scope": {
+			"value": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Storage/storageAccounts/sthnkproyectodemodev"
+		},
+		"TRG_ST_FILES_properties_typeProperties_scope": {
+			"value": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Storage/storageAccounts/sthnkproyectodemodev"
+		},
+		"AzureBlobStorage269_properties_privateLinkResourceId": {
+			"value": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Storage/storageAccounts/sthnkproyectodemodev"
+		},
+		"AzureBlobStorage269_properties_groupId": {
+			"value": "blob"
+		},
+		"AzureBlobStorage269_properties_fqdns": {
+			"value": [
+				"sthnkproyectodemodev.blob.core.windows.net"
+			]
+		},
+		"AzureSqlMI144_properties_privateLinkResourceId": {
+			"value": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Sql/managedInstances/sqlmi-hnk-proyectodemo-dev"
+		},
+		"AzureSqlMI144_properties_groupId": {
+			"value": "managedInstance"
+		},
+		"AzureSqlMI144_properties_fqdns": {
+			"value": [
+				"sqlmi-hnk-proyectodemo-dev.55a1028fd0ca.database.windows.net"
+			]
+		}
+	}
+}
