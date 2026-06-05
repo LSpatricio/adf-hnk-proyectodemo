@@ -1181,7 +1181,7 @@
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
 					"blobPathBeginsWith": "/staging-files/blobs/",
-					"blobPathEndsWith": ".csv",
+					"blobPathEndsWith": ".xlsx",
 					"ignoreEmptyBlobs": true,
 					"scope": "[parameters('TRG_ST_FILES_properties_typeProperties_scope')]",
 					"events": [
