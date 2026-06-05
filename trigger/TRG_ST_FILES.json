@@ -1,12 +1,12 @@
 {
-	"name": "TRG_ST_ENCRYPTED",
+	"name": "TRG_ST_FILES",
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "PL_ST_COPY_SFTP_ENCRYP",
+					"referenceName": "PL_ST_COPY_SQLMI",
 					"type": "PipelineReference"
 				},
 				"parameters": {
@@ -16,8 +16,8 @@
 		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
-			"blobPathBeginsWith": "/encrypted-files/blobs/",
-			"blobPathEndsWith": ".pgp",
+			"blobPathBeginsWith": "/direct-files/blobs/",
+			"blobPathEndsWith": ".csv",
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Storage/storageAccounts/sthnkproyectodemodev",
 			"events": [
