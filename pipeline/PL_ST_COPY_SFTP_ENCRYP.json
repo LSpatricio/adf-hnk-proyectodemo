@@ -1,0 +1,153 @@
+{
+	"name": "PL_ST_COPY_SFTP_ENCRYP",
+	"properties": {
+		"activities": [
+			{
+				"name": "tableName",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "tableName",
+					"value": {
+						"value": "@replace(pipeline().parameters.fileName,'.csv.pgp' ,'' )",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Check Configuration Table",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "tableName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlMISource",
+						"sqlReaderQuery": {
+							"value": "@concat('SELECT Esquema, NombreTabla, XCARET, StoredProcedure,TablaTemp FROM ConfiguracionTablas WHERE NombreTabla =''',variables('tableName'), ''' AND Activo=0')",
+							"type": "Expression"
+						},
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQLMI",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "dbo",
+							"tableName": "ConfiguracionTablas"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Check Configuration Table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Check Configuration Table').output.value",
+						"type": "Expression"
+					},
+					"batchCount": 5,
+					"activities": [
+						{
+							"name": "Copy data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlMISource",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "BinarySink",
+									"storeSettings": {
+										"type": "SftpWriteSettings",
+										"operationTimeout": "01:00:00",
+										"useTempFileRename": true
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_SQLMI",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": {
+											"value": "@item().Esquema",
+											"type": "Expression"
+										},
+										"tableName": {
+											"value": "@item().NombreTabla",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_SFTP_XCARET",
+									"type": "DatasetReference",
+									"parameters": {
+										"directory": "Entrada",
+										"fileName": {
+											"value": "@pipeline().parameters.fileName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"fileName": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"tableName": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
