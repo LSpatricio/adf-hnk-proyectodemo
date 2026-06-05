@@ -3,7 +3,17 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [],
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "PL_ST_COPY_SQLMI",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"fileName": "@triggerBody().fileName"
+				}
+			}
+		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/direct-files/blobs/",
