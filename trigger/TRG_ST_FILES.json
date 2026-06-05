@@ -2,11 +2,11 @@
 	"name": "TRG_ST_FILES",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
-			"blobPathBeginsWith": "/direct-files/blobs/",
+			"blobPathBeginsWith": "/staging-files/blobs/",
 			"blobPathEndsWith": ".csv",
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Storage/storageAccounts/sthnkproyectodemodev",
