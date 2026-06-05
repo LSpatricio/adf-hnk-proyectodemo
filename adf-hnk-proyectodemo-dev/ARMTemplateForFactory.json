@@ -35,6 +35,10 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Storage/storageAccounts/sthnkproyectodemodev"
 		},
+		"TRG_ST_FILES_properties_PL_STG_COPY_SQLMI_STAG_parameters_fileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
 		"TRG_ST_FILES_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Storage/storageAccounts/sthnkproyectodemodev"
@@ -279,7 +283,14 @@
 					{
 						"name": "Check Configuration Table",
 						"type": "Lookup",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "tableName",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -292,7 +303,7 @@
 							"source": {
 								"type": "SqlMISource",
 								"sqlReaderQuery": {
-									"value": "@concat('SELECT Esquema, NombreTabla, XCARET, StoredProcedure,TablaTemp FROM ConfiguracionTablas WHERE Esquema = ''',pipeline().parameters.schema,''' AND NombreTabla =''',pipeline().parameters.tableName, ''' AND Activo=1')",
+									"value": "@concat('SELECT Esquema, NombreTabla, XCARET, StoredProcedure,TablaTemp FROM ConfiguracionTablas WHERE  NombreTabla =''',variables('tableName'), ''' AND Activo=1')",
 									"type": "Expression"
 								},
 								"partitionOption": "None"
@@ -524,17 +535,36 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "tableName",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "tableName",
+							"value": {
+								"value": "@replace(pipeline().parameters.fileName,'.csv','')",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
 				"parameters": {
-					"schema": {
+					"fileName": {
 						"type": "string"
-					},
+					}
+				},
+				"variables": {
 					"tableName": {
-						"type": "string"
+						"type": "String"
 					}
 				},
 				"annotations": []
@@ -800,163 +830,6 @@
 				"[concat(variables('factoryId'), '/datasets/DS_SQLMI')]",
 				"[concat(variables('factoryId'), '/datasets/DS_ST_BINARY')]",
 				"[concat(variables('factoryId'), '/datasets/DS_SFTP_XCARET')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_ST_COPY_SQLMI')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "tableName",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "tableName",
-							"value": {
-								"value": "@replace(pipeline().parameters.fileName,'.csv' ,'' )",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Table Exists",
-						"type": "GetMetadata",
-						"dependsOn": [
-							{
-								"activity": "tableName",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "DS_SQLMI",
-								"type": "DatasetReference",
-								"parameters": {
-									"schema": "dbo",
-									"tableName": {
-										"value": "@variables('tableName')",
-										"type": "Expression"
-									}
-								}
-							},
-							"fieldList": [
-								"exists"
-							]
-						}
-					},
-					{
-						"name": "ST to SQLMI",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Table Exists",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "SqlMISink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"tableOption": "autoCreate"
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_ST_CSV",
-								"type": "DatasetReference",
-								"parameters": {
-									"container": {
-										"value": "@pipeline().globalParameters.filesToSQLContainer",
-										"type": "Expression"
-									},
-									"fileName": {
-										"value": "@pipeline().parameters.fileName",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_SQLMI",
-								"type": "DatasetReference",
-								"parameters": {
-									"schema": "dbo",
-									"tableName": {
-										"value": "@variables('tableName')",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"fileName": {
-						"type": "string"
-					}
-				},
-				"variables": {
-					"tableName": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_SQLMI')]",
-				"[concat(variables('factoryId'), '/datasets/DS_ST_CSV')]"
 			]
 		},
 		{
@@ -1249,11 +1122,21 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_STG_COPY_SQLMI_STAG",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"fileName": "[parameters('TRG_ST_FILES_properties_PL_STG_COPY_SQLMI_STAG_parameters_fileName')]"
+						}
+					}
+				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"blobPathBeginsWith": "/direct-files/blobs/",
+					"blobPathBeginsWith": "/staging-files/blobs/",
 					"blobPathEndsWith": ".csv",
 					"ignoreEmptyBlobs": true,
 					"scope": "[parameters('TRG_ST_FILES_properties_typeProperties_scope')]",
@@ -1262,7 +1145,9 @@
 					]
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_STG_COPY_SQLMI_STAG')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
