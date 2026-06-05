@@ -9,6 +9,10 @@
 			"decryptedFilesContainer": {
 				"type": "string",
 				"value": "decrypted-files"
+			},
+			"filesToSQLContainer": {
+				"type": "string",
+				"value": "direct-files"
 			}
 		},
 		"trustModeClaimForMi": {
