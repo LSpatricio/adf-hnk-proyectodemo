@@ -196,14 +196,11 @@
 							"userProperties": [],
 							"typeProperties": {
 								"source": {
-									"type": "DelimitedTextSource",
+									"type": "ExcelSource",
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true,
 										"enablePartitionDiscovery": false
-									},
-									"formatSettings": {
-										"type": "DelimitedTextReadSettings"
 									}
 								},
 								"sink": {
@@ -224,15 +221,15 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "DS_ST_CSV",
+									"referenceName": "DS_ST_XLSX",
 									"type": "DatasetReference",
 									"parameters": {
 										"container": {
-											"value": "@pipeline().globalParameters.filesToSQLContainer",
+											"value": "@pipeline().globalParameters.stagingFiles",
 											"type": "Expression"
 										},
 										"fileName": {
-											"value": "@concat(item().TablaTemp,'.csv')",
+											"value": "@pipeline().parameters.fileName",
 											"type": "Expression"
 										}
 									}
@@ -270,7 +267,7 @@
 				"typeProperties": {
 					"variableName": "tableName",
 					"value": {
-						"value": "@replace(pipeline().parameters.fileName,'.csv','')",
+						"value": "@replace(pipeline().parameters.fileName,'.xlsx','')",
 						"type": "Expression"
 					}
 				}
@@ -285,6 +282,9 @@
 			"tableName": {
 				"type": "String"
 			}
+		},
+		"folder": {
+			"name": "FlujoStagin"
 		},
 		"annotations": []
 	}
