@@ -5,7 +5,14 @@
 			{
 				"name": "Check Configuration Table",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "tableName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -18,7 +25,7 @@
 					"source": {
 						"type": "SqlMISource",
 						"sqlReaderQuery": {
-							"value": "@concat('SELECT Esquema, NombreTabla, XCARET, StoredProcedure,TablaTemp FROM ConfiguracionTablas WHERE Esquema = ''',pipeline().parameters.schema,''' AND NombreTabla =''',pipeline().parameters.tableName, ''' AND Activo=1')",
+							"value": "@concat('SELECT Esquema, NombreTabla, XCARET, StoredProcedure,TablaTemp FROM ConfiguracionTablas WHERE  NombreTabla =''',variables('tableName'), ''' AND Activo=1')",
 							"type": "Expression"
 						},
 						"partitionOption": "None"
@@ -250,11 +257,33 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "tableName",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "tableName",
+					"value": {
+						"value": "@replace(pipeline().parameters.fileName,'.csv','')",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
 			"fileName": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"tableName": {
+				"type": "String"
 			}
 		},
 		"annotations": []
