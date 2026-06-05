@@ -6,15 +6,6 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "PL_ST_COPY_SFTP",
-					"type": "PipelineReference"
-				},
-				"parameters": {
-					"fileName": "@triggerBody().fileName"
-				}
-			},
-			{
-				"pipelineReference": {
 					"referenceName": "PL_ST_COPY_SFTP_ENCRYP",
 					"type": "PipelineReference"
 				},
