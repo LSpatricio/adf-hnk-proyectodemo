@@ -10,5 +10,9 @@
 	"filesToSQLContainer": {
 		"type": "string",
 		"value": "direct-files"
+	},
+	"stagingFiles": {
+		"type": "string",
+		"value": "staging-files"
 	}
 }

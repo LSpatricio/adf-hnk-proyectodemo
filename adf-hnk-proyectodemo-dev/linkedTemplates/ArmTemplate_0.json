@@ -393,6 +393,49 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_ST_XLSX')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Blob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Storage"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().container",
+							"type": "Expression"
+						}
+					},
+					"sheetIndex": 0,
+					"firstRowAsHeader": true
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Blob')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_SQLMI_COPY_STG')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -619,7 +662,7 @@
 							"source": {
 								"type": "SqlMISource",
 								"sqlReaderQuery": {
-									"value": "@concat('SELECT Esquema, NombreTabla, XCARET, StoredProcedure,TablaTemp FROM ConfiguracionTablas WHERE  NombreTabla =''',variables('tableName'), ''' AND Activo=1')",
+									"value": "@concat('SELECT Esquema, NombreTabla, XCARET, StoredProcedure,TablaTemp FROM ConfiguracionTablas WHERE  TablaTemp =''',variables('tableName'), ''' AND Activo=1')",
 									"type": "Expression"
 								},
 								"partitionOption": "None"
@@ -790,14 +833,11 @@
 									"userProperties": [],
 									"typeProperties": {
 										"source": {
-											"type": "DelimitedTextSource",
+											"type": "ExcelSource",
 											"storeSettings": {
 												"type": "AzureBlobStorageReadSettings",
 												"recursive": true,
 												"enablePartitionDiscovery": false
-											},
-											"formatSettings": {
-												"type": "DelimitedTextReadSettings"
 											}
 										},
 										"sink": {
@@ -818,15 +858,15 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "DS_ST_CSV",
+											"referenceName": "DS_ST_XLSX",
 											"type": "DatasetReference",
 											"parameters": {
 												"container": {
-													"value": "@pipeline().globalParameters.filesToSQLContainer",
+													"value": "@pipeline().globalParameters.stagingFiles",
 													"type": "Expression"
 												},
 												"fileName": {
-													"value": "@concat(item().TablaTemp,'.csv')",
+													"value": "@pipeline().parameters.fileName",
 													"type": "Expression"
 												}
 											}
@@ -864,7 +904,7 @@
 						"typeProperties": {
 							"variableName": "tableName",
 							"value": {
-								"value": "@replace(pipeline().parameters.fileName,'.csv','')",
+								"value": "@replace(pipeline().parameters.fileName,'.xlsx','')",
 								"type": "Expression"
 							}
 						}
@@ -883,11 +923,15 @@
 						"type": "String"
 					}
 				},
+				"folder": {
+					"name": "FlujoStagin"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_SQLMI')]",
 				"[concat(variables('factoryId'), '/datasets/DS_ST_CSV')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ST_XLSX')]",
 				"[concat(variables('factoryId'), '/linkedServices/LS_SQLMI')]"
 			]
 		},
