@@ -42,7 +42,7 @@
 					"source": {
 						"type": "SqlMISource",
 						"sqlReaderQuery": {
-							"value": "@concat('SELECT Esquema, NombreTabla, XCARET, StoredProcedure,TablaTemp FROM ConfiguracionTablas WHERE NombreTabla =''',variables('tableName'), ''' AND Activo=0')",
+							"value": "@concat('SELECT Esquema, NombreTabla, XCARET, StoredProcedure,TablaTemp FROM ConfiguracionTablas WHERE NombreTabla =''',variables('tableName'), ''' AND Activo=1')",
 							"type": "Expression"
 						},
 						"partitionOption": "None"
