@@ -27,6 +27,14 @@
 			"type": "string",
 			"defaultValue": "sqlmi-connectionstring-vnet"
 		},
+		"TRG_ST_DIRECT_properties_PL_ST_COPY_SFTP_parameters_fileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"TRG_ST_DIRECT_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Storage/storageAccounts/sthnkproyectodemodev"
+		},
 		"TRG_ST_ENCRYPTED_properties_PL_ST_COPY_SFTP_ENCRYP_parameters_fileName": {
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
@@ -98,7 +106,7 @@
 							"source": {
 								"type": "SqlMISource",
 								"sqlReaderQuery": {
-									"value": "@concat('SELECT Esquema, NombreTabla, XCARET, StoredProcedure,TablaTemp FROM ConfiguracionTablas WHERE Esquema = ''',pipeline().parameters.schema,''' AND NombreTabla =''',pipeline().parameters.tableName, ''' AND Activo=0')",
+									"value": "@concat('SELECT Esquema, NombreTabla, XCARET, StoredProcedure,TablaTemp FROM ConfiguracionTablas WHERE Esquema = ''',pipeline().parameters.schema,''' AND NombreTabla =''',pipeline().parameters.tableName, ''' AND Activo=1')",
 									"type": "Expression"
 								},
 								"partitionOption": "None"
@@ -264,7 +272,7 @@
 					}
 				},
 				"folder": {
-					"name": "Flujo1"
+					"name": "Caso1"
 				},
 				"annotations": []
 			},
@@ -565,7 +573,7 @@
 					}
 				},
 				"folder": {
-					"name": "FlujoStagin"
+					"name": "Caso2"
 				},
 				"annotations": []
 			},
@@ -654,6 +662,9 @@
 						"type": "string"
 					}
 				},
+				"folder": {
+					"name": "Caso3"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -707,7 +718,7 @@
 							"source": {
 								"type": "SqlMISource",
 								"sqlReaderQuery": {
-									"value": "@concat('SELECT Esquema, NombreTabla, XCARET, StoredProcedure,TablaTemp FROM ConfiguracionTablas WHERE NombreTabla =''',variables('tableName'), ''' AND Activo=0')",
+									"value": "@concat('SELECT Esquema, NombreTabla, XCARET, StoredProcedure,TablaTemp FROM ConfiguracionTablas WHERE NombreTabla =''',variables('tableName'), ''' AND Activo=1')",
 									"type": "Expression"
 								},
 								"partitionOption": "None"
@@ -823,7 +834,7 @@
 					}
 				},
 				"folder": {
-					"name": "Flujo1"
+					"name": "Caso1"
 				},
 				"annotations": []
 			},
@@ -1125,6 +1136,39 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/integrationRuntime1')]",
 				"[concat(variables('factoryId'), '/linkedServices/LS_KV')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TRG_ST_DIRECT')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_ST_COPY_SFTP",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"fileName": "[parameters('TRG_ST_DIRECT_properties_PL_ST_COPY_SFTP_parameters_fileName')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/direct-files/blobs/",
+					"blobPathEndsWith": ".csv",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('TRG_ST_DIRECT_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_ST_COPY_SFTP')]"
 			]
 		},
 		{

@@ -20,6 +20,12 @@
 		"LS_SQLMI_properties_typeProperties_connectionString_secretName": {
 			"value": "sqlmi-connectionstring-vnet"
 		},
+		"TRG_ST_DIRECT_properties_PL_ST_COPY_SFTP_parameters_fileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"TRG_ST_DIRECT_properties_typeProperties_scope": {
+			"value": "/subscriptions/b2b90ae2-21ac-4983-9392-d9cbb1910c64/resourceGroups/rg-hnk-proyectodemo-tgv-dev/providers/Microsoft.Storage/storageAccounts/sthnkproyectodemodev"
+		},
 		"TRG_ST_ENCRYPTED_properties_PL_ST_COPY_SFTP_ENCRYP_parameters_fileName": {
 			"value": "@triggerBody().fileName"
 		},
