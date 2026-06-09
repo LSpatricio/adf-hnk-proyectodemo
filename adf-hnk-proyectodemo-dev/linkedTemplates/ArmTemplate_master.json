@@ -109,11 +109,17 @@
 					"LS_KV_properties_typeProperties_baseUrl": {
 						"value": "[parameters('LS_KV_properties_typeProperties_baseUrl')]"
 					},
+					"LS_Blob_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('LS_Blob_properties_typeProperties_serviceEndpoint')]"
+					},
 					"LS_SFTP_XCARET_properties_typeProperties_host": {
 						"value": "[parameters('LS_SFTP_XCARET_properties_typeProperties_host')]"
 					},
 					"LS_SFTP_XCARET_properties_typeProperties_userName": {
 						"value": "[parameters('LS_SFTP_XCARET_properties_typeProperties_userName')]"
+					},
+					"LS_SQLMI_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('LS_SQLMI_properties_typeProperties_connectionString_secretName')]"
 					},
 					"AzureBlobStorage269_properties_privateLinkResourceId": {
 						"value": "[parameters('AzureBlobStorage269_properties_privateLinkResourceId')]"
@@ -132,12 +138,6 @@
 					},
 					"AzureSqlMI144_properties_fqdns": {
 						"value": "[parameters('AzureSqlMI144_properties_fqdns')]"
-					},
-					"LS_Blob_properties_typeProperties_serviceEndpoint": {
-						"value": "[parameters('LS_Blob_properties_typeProperties_serviceEndpoint')]"
-					},
-					"LS_SQLMI_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('LS_SQLMI_properties_typeProperties_connectionString_secretName')]"
 					},
 					"TRG_ST_DIRECT_properties_PL_ST_COPY_SFTP_parameters_fileName": {
 						"value": "[parameters('TRG_ST_DIRECT_properties_PL_ST_COPY_SFTP_parameters_fileName')]"
